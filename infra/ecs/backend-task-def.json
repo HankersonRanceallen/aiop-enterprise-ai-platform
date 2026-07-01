@@ -1,0 +1,14 @@
+{
+  "family": "aiop-backend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "containerDefinitions": [
+    {
+      "name": "aiop-backend",
+      "image": "PLACEHOLDER",
+      "portMappings": [{ "containerPort": 8000 }]
+    }
+  ]
+}

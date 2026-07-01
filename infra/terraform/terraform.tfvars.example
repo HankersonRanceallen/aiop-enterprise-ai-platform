@@ -1,0 +1,30 @@
+# Copy to terraform.tfvars and fill in your values
+# NEVER commit terraform.tfvars to git — it contains secrets
+
+aws_region  = "us-east-1"
+environment = "production"
+app_name    = "aiop"
+
+# Network
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24"]
+
+# RDS
+db_instance_class = "db.t3.medium"
+db_name           = "aiop_db"
+db_username       = "aiop"
+db_password       = "CHANGE_ME_strong_password_here"
+
+# ECS sizing
+backend_cpu            = 1024   # 1 vCPU
+backend_memory         = 2048   # 2 GB
+frontend_cpu           = 512
+frontend_memory        = 1024
+backend_desired_count  = 2
+frontend_desired_count = 2
+
+# App secrets
+openai_api_key    = "sk-..."
+anthropic_api_key = "sk-ant-..."
+app_secret_key    = "generate with: openssl rand -hex 32"
