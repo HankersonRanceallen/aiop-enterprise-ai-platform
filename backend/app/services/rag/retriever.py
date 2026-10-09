@@ -4,10 +4,8 @@ RAG Retriever
 Performs cosine similarity search against document chunks in pgvector.
 Returns the top-k most relevant chunks for a given question embedding.
 """
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, text
-
-from app.models.document import DocumentChunk, Document, DocumentStatus
 
 
 async def retrieve_chunks(

@@ -1,16 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.api.deps import get_current_user
 from app.core.database import get_db
 from app.models.conversation import Conversation, Message, MessageRole
 from app.models.user import User
 from app.schemas.chat import (
-    ChatRequest, ChatResponse, ConversationDetailOut,
-    ConversationOut, MessageOut, SourceChunk,
+    ChatRequest,
+    ChatResponse,
+    ConversationDetailOut,
+    ConversationOut,
+    SourceChunk,
 )
-from app.api.deps import get_current_user
 from app.services.llm.factory import get_llm_service
 from app.services.rag.pipeline import run_rag_query
 

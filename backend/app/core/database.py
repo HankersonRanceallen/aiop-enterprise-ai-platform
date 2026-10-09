@@ -1,13 +1,12 @@
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import text
 
 from app.core.config import settings
-
 
 engine = create_async_engine(
     settings.database_url,
@@ -44,5 +43,5 @@ async def init_db() -> None:
     async with engine.begin() as conn:
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         # Import all models so Base.metadata knows about them
-        from app.models import user, document, conversation, agent_run, evaluation  # noqa: F401
+        from app.models import agent_run, conversation, document, evaluation, user  # noqa: F401
         await conn.run_sync(Base.metadata.create_all)

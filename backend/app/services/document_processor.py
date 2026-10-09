@@ -4,12 +4,9 @@ Document Processor
 Extracts plain text from uploaded files and splits into
 overlapping chunks for embedding.
 """
-import os
-from pathlib import Path
 
-import aiofiles
-from pypdf import PdfReader
 from docx import Document as DocxDocument
+from pypdf import PdfReader
 
 from app.core.config import settings
 

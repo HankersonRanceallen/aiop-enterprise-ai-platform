@@ -91,7 +91,8 @@ Respond with ONLY valid JSON (no markdown):
 
 def _format_context(chunks: list[dict]) -> str:
     return "\n\n".join(
-        f"[{i+1}] {c['content']}" for i, c in enumerate(chunks[:5])
+        f"[{i+1}] {c.get('document_title', 'Unknown source')}: {c['content']}"
+        for i, c in enumerate(chunks[:5])
     )
 
 

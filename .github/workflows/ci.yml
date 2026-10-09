@@ -89,6 +89,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
           pip install -r backend/requirements-dev.txt
 
@@ -110,7 +111,7 @@ jobs:
   build:
     name: Build Docker images
     runs-on: ubuntu-latest
-    needs: [lint, unit-tests]
+    needs: [lint, unit-tests, integration-tests]
     steps:
       - uses: actions/checkout@v4
 
