@@ -37,3 +37,5 @@ pydantic-settings==2.5.2
 # Utilities
 python-dotenv==1.0.1
 aiofiles==24.1.0
+
+email-validator>=2.0.0
