@@ -1,18 +1,17 @@
 import os
-import asyncio
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status, BackgroundTasks
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
 import aiofiles
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
 from app.models.document import Document, DocumentChunk, DocumentStatus
 from app.models.user import User
 from app.schemas.document import DocumentListResponse, DocumentOut
-from app.api.deps import get_current_user
 from app.services.document_processor import process_document
 from app.services.llm.factory import get_llm_service
 
@@ -26,8 +25,9 @@ async def _ingest_document(document_id: int, file_path: str, file_type: str) -> 
     Background task: extract text, embed chunks, store in pgvector.
     Runs after the upload response is returned to the user.
     """
-    from app.core.database import AsyncSessionLocal
     from sqlalchemy import update
+
+    from app.core.database import AsyncSessionLocal
 
     async with AsyncSessionLocal() as db:
         try:

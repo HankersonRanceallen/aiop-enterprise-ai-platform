@@ -9,12 +9,13 @@ In V2, the Retriever Agent is smarter — it uses the plan to construct
 multiple targeted queries and merges the results.
 """
 import time
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.services.agents.state import AgentState
 from app.services.llm.base import BaseLLMService
 from app.services.rag.retriever import retrieve_chunks
-from app.core.config import settings
 
 QUERY_SYSTEM = """You are a search query specialist.
 Given a task and a plan, generate the SINGLE most effective search query

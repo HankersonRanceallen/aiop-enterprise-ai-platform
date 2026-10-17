@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, text
 
-from app.core.database import get_db
-from app.models.document import Document, DocumentStatus
-from app.models.conversation import Conversation, Message
-from app.models.user import User
 from app.api.deps import get_current_user
+from app.core.database import get_db
+from app.models.conversation import Conversation, Message
+from app.models.document import Document, DocumentStatus
+from app.models.user import User
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 

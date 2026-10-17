@@ -189,7 +189,7 @@ export default function AgentsPage() {
       }
     } finally {
       setActiveAgent(null);
-      if (status === "running") setStatus("idle");
+      setStatus("idle");
     }
   }, [task, status]);
 

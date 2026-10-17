@@ -12,17 +12,16 @@ import json
 import time
 from typing import AsyncIterator
 
-from langgraph.graph import StateGraph, END
+from langgraph.graph import END, StateGraph
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.agents.state import AgentState
-from app.services.agents.planner import planner_node
-from app.services.agents.retriever_agent import retriever_node
 from app.services.agents.analysis_agent import analysis_node
+from app.services.agents.planner import planner_node
 from app.services.agents.report_agent import report_node
+from app.services.agents.retriever_agent import retriever_node
+from app.services.agents.state import AgentState
 from app.services.llm.factory import get_llm_service
 from app.services.mlflow_service import log_agent_run
-
 
 NODE_DISPLAY = {
     "planner":   {"label": "Planner Agent",   "emoji": "🧠"},

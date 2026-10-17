@@ -9,11 +9,10 @@ V3 addition: every query is logged to MLflow for experiment tracking.
 """
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.llm.base import BaseLLMService, LLMResponse
-from app.services.rag.retriever import retrieve_chunks
-from app.services.mlflow_service import log_rag_query
 from app.core.config import settings
-
+from app.services.llm.base import BaseLLMService, LLMResponse
+from app.services.mlflow_service import log_rag_query
+from app.services.rag.retriever import retrieve_chunks
 
 RAG_SYSTEM_PROMPT = """You are an intelligent assistant for an enterprise knowledge platform.
 You answer questions based ONLY on the provided document context below.

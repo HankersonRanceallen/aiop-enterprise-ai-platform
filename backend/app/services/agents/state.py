@@ -7,8 +7,8 @@ Each agent reads from it and writes its output back into it.
 This is the "memory" of the multi-agent system — every agent can see
 what the previous agents produced.
 """
-from typing import TypedDict, Annotated
 import operator
+from typing import Annotated, TypedDict
 
 
 class AgentState(TypedDict):

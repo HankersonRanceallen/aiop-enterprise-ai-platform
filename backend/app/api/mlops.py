@@ -11,26 +11,24 @@ Endpoints for the V3 MLOps layer:
 """
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, text
 
+from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
-from app.models.evaluation import EvaluationResult
-from app.models.conversation import Message, Conversation
 from app.models.agent_run import AgentRun, AgentRunStatus
+from app.models.evaluation import EvaluationResult
 from app.models.user import User
 from app.schemas.mlops import (
-    EvaluateRequest, EvaluationOut,
-    ModelComparisonRow, MonitoringStats,
+    EvaluateRequest,
+    EvaluationOut,
+    ModelComparisonRow,
 )
-from app.api.deps import get_current_user
 from app.services.evaluation import evaluate_rag_response
-from app.services.mlflow_service import (
-    log_evaluation, calculate_cost, MODEL_PRICING
-)
 from app.services.llm.factory import get_llm_service
+from app.services.mlflow_service import calculate_cost, log_evaluation
 
 router = APIRouter(prefix="/mlops", tags=["mlops"])
 

@@ -1,1 +1,21 @@
-**/node_modules/
+﻿# Python generated files
+__pycache__/
+*.py[cod]
+
+# Next.js generated files
+/frontend/.next/
+/frontend/node_modules/
+
+# Terraform local files
+/infra/terraform/terraform.tfvars
+/infra/terraform/.terraform/
+/infra/terraform/*.tfstate
+/infra/terraform/*.tfstate.*
+/infra/terraform/*.tfplan
+
+# Local Terraform secrets
+/terraform.tfvars
+
+# Local Python virtual environments
+.venv/
+backend/.venv/

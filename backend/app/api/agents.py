@@ -3,14 +3,14 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_current_user
 from app.core.database import get_db
 from app.models.agent_run import AgentRun, AgentRunStatus
 from app.models.user import User
-from app.schemas.agents import AgentRunRequest, AgentRunOut, AgentRunListOut
-from app.api.deps import get_current_user
+from app.schemas.agents import AgentRunListOut, AgentRunOut, AgentRunRequest
 from app.services.agents.graph import stream_agent_run
 
 router = APIRouter(prefix="/agents", tags=["agents"])
@@ -91,8 +91,9 @@ async def run_agent_stream(
             yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
         finally:
             # Save final state to DB
-            from app.core.database import AsyncSessionLocal
             from sqlalchemy import update
+
+            from app.core.database import AsyncSessionLocal
 
             latency_ms = (time.monotonic() - start) * 1000
 
