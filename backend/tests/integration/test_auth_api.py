@@ -28,7 +28,7 @@ class TestRegister:
     @pytest.mark.asyncio
     async def test_register_without_org(self, app_client):
         response = await app_client.post("/api/v1/auth/register", json={
-            "email": "noorg@example.com",
+            "email": f"nobody-{__import__('uuid').uuid4().hex[:12]}@example.com",
             "full_name": "No Org User",
             "password": "password123",
         })
@@ -58,7 +58,7 @@ class TestLogin:
     @pytest.mark.asyncio
     async def test_login_unknown_email_fails(self, app_client):
         response = await app_client.post("/api/v1/auth/login", json={
-            "email": "nobody@example.com",
+            "email": f"nobody-{__import__('uuid').uuid4().hex[:12]}@example.com",
             "password": "password123",
         })
         assert response.status_code == 401

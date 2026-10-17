@@ -145,26 +145,40 @@ def integration_db_url():
 
 @pytest_asyncio.fixture
 async def app_client(integration_db_url, monkeypatch):
-    """
-    Real FastAPI test client backed by a test database.
-    Requires TEST_DATABASE_URL env var.
-    """
+    """Real FastAPI test client backed by a test database."""
     monkeypatch.setenv("DATABASE_URL", integration_db_url)
     monkeypatch.setenv("SECRET_KEY", "test-secret-key-for-testing-only")
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test-fake-key")
 
+    # Import only after setting the test environment.
+    from app.core.config import settings
+    settings.database_url = integration_db_url
+    settings.secret_key = "test-secret-key-for-testing-only"
+    settings.openai_api_key = "sk-test-fake-key"
+
+    from app.core.database import engine, init_db
     from app.main import app
-    from app.core.database import init_db
-    await init_db()
 
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
-        yield client
+    # Avoid reusing asyncpg connections across pytest event loops.
+    await engine.dispose()
 
+    try:
+        await init_db()
+
+        async with AsyncClient(
+            transport=ASGITransport(app=app),
+            base_url="http://test",
+        ) as client:
+            yield client
+    finally:
+        await engine.dispose()
 
 @pytest.fixture
 def test_user_data():
+    import uuid
+
     return {
-        "email": "test@example.com",
+        "email": f"test-{uuid.uuid4().hex[:12]}@example.com",
         "full_name": "Test User",
         "password": "testpassword123",
         "organization_name": "Test Org",

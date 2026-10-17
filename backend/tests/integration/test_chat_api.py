@@ -21,29 +21,28 @@ class TestSendMessage:
     @pytest.mark.asyncio
     async def test_chat_creates_conversation(self, authed_client, sample_chunks):
         client, headers = authed_client
+        mock_llm = type("MockLLM", (), {
+            "provider_name": "mock",
+            "model_name": "mock-model",
+            "generate": AsyncMock(return_value=type("R", (), {
+                "content": "Test answer",
+                "provider": "mock",
+                "model": "mock-model",
+                "prompt_tokens": 50,
+                "completion_tokens": 25,
+                "total_tokens": 75,
+                "latency_ms": 100.0,
+            })()),
+            "embed": AsyncMock(return_value=type("E", (), {
+                "embedding": [0.1] * 1536
+            })()),
+        })()
+
         with patch(
             "app.services.rag.pipeline.retrieve_chunks",
             new=AsyncMock(return_value=sample_chunks),
         ), patch("app.services.rag.pipeline.log_rag_query"), \
-           patch("app.services.llm.factory.get_llm_service") as mock_factory:
-            mock_factory.return_value.__class__ = type(
-                "MockLLM", (), {
-                    "provider_name": "mock",
-                    "model_name": "mock-model",
-                    "generate": AsyncMock(return_value=type("R", (), {
-                        "content": "Test answer",
-                        "provider": "mock",
-                        "model": "mock-model",
-                        "prompt_tokens": 50,
-                        "completion_tokens": 25,
-                        "total_tokens": 75,
-                        "latency_ms": 100.0,
-                    })()),
-                    "embed": AsyncMock(return_value=type("E", (), {
-                        "embedding": [0.1] * 1536
-                    })()),
-                }
-            )
+           patch("app.api.chat.get_llm_service", return_value=mock_llm):
             response = await client.post(
                 "/api/v1/chat",
                 json={"message": "What is the leave policy?"},
