@@ -9,7 +9,7 @@ permissions:
   contents: read    
 
 env:
-  AWS_REGION: us-east-2
+  AWS_REGION: us-east-1
   ECR_BACKEND_REPO: aiop-backend
   ECR_FRONTEND_REPO: aiop-frontend
   ECS_CLUSTER: aiop-cluster
@@ -32,7 +32,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
            role-to-assume: arn:aws:iam::900182162343:role/aiop-github-deploy-role
-           aws-region: us-east-2
+           aws-region: us-east-1
         
 
       - name: Login to Amazon ECR
@@ -79,7 +79,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
            role-to-assume: arn:aws:iam::900182162343:role/aiop-github-deploy-role
-           aws-region: us-east-2
+           aws-region: us-east-1
 
       - name: Download current task definition
         run: |
@@ -117,7 +117,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::900182162343:role/aiop-github-deploy-role
-          aws-region: us-east-2
+          aws-region: us-east-1
       - name: Download current task definition
         run: |
           aws ecs describe-task-definition \
